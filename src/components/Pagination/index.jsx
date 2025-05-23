@@ -44,7 +44,7 @@ const PaginationComponent = ({ currentPage, totalPages, onPageChange }) => {
   };
 
   return (
-    <Pagination className="d-flex justify-content-center mt-4">
+    <Pagination  style={{ gap: '0.5rem' }} className="d-flex justify-content-center mt-4">
       <PaginationItem disabled={currentPage === 1}>
         <PaginationLink 
           previous 

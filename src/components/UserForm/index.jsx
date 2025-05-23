@@ -104,11 +104,11 @@ const UserForm = ({ user, onSubmit, resetForm }) => {
         }
         break;
       case 'phone':
-        if (!value.trim()) {
-          error = 'Phone number is required';
-        } else if (!/^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/.test(value)) {
-          error = 'Please enter a valid phone number';
-        }
+ if (!value.trim()) {
+  error = 'Phone number is required';
+} else if (!/^\+\d{1,3}[\s.-]?\d{1,4}[\s.-]?\d{3,4}[\s.-]?\d{3,4}$/.test(value)) {
+  error = 'Please enter a valid phone number';
+}
         break;
       case 'username':
         if (!value.trim()) {

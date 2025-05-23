@@ -15,7 +15,7 @@ const localStorageService = {
     try {
       const users = localStorageService.getUsers();
 
-      const maxId = users.reduce((max, u) => Math.max(max, u.id || 0), 0);
+      const maxId = users.reduce((max, u) => Math.max(max, u.id || 0), 1000);
       const newUser = { ...user, id: maxId + 1 };
       
       users.push(newUser);
