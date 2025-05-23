@@ -8,11 +8,18 @@ import {
   CardBody, 
 } from 'reactstrap';
 import './App.css';
+import { useState } from 'react';
 import UserList from './components/UserList';
+import UserModal from './components/UserModal';
 
 function App() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const users = [
+  const toggleModal = () => {
+    setIsModalOpen(!isModalOpen);
+  };
+
+  const users = [
     {
       id: 1,
       firstName: 'John',
@@ -29,6 +36,7 @@ function App() {
       </Alert>
     );
   }
+
   return (
     <Container className="py-4">
       <Row className="mb-4">
@@ -38,7 +46,6 @@ function App() {
             This application demonstrates user management features using React, 
             including pagination, adding new users, editing existing users, and deleting users.
           </p>
-          
         </Col>
       </Row>
 
@@ -56,10 +63,11 @@ function App() {
               </div>
               <div className='button-group'>
                 <Button 
-            color="primary" 
-          >
-            Add New User
-          </Button>
+                  color="primary"
+                  onClick={toggleModal}
+                >
+                  Add New User
+                </Button>
                 <Button 
                   color="success" 
                   size="sm" 
@@ -69,13 +77,18 @@ function App() {
               </div>
             </CardHeader>
             <CardBody>
-               <UserList 
-                    users={users} 
-                  />
+              <UserList 
+                users={users} 
+              />
             </CardBody>
           </Card>
         </Col>
       </Row>
+
+      <UserModal 
+        isOpen={isModalOpen} 
+        toggle={toggleModal} 
+      />
     </Container>
   );
 }
