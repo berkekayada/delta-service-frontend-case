@@ -1,12 +1,84 @@
-# React + Vite
+# 🧾 User Management Uygulaması
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+🎬 [Uygulama Tanıtım Videosu](./showcase.mp4)
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Vite + React + Reactstrap tabanlı bir kullanıcı yönetim uygulamasıdır. Uygulama, sahte bir API'den (DummyJSON) kullanıcı verilerini alır, `localStorage`'a kaydeder ve sonraki işlemleri tamamen local veriler üzerinden yürütür.
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🚀 Kurulum
+
+### NPM ile:
+
+```bash
+git clone https://github.com/kullanici/delta-service-frontend-case.git
+cd delta-service-frontend-case
+npm install
+npm run dev
+```
+
+### PNPM ile:
+
+```bash
+git clone https://github.com/kullanici/delta-service-frontend-case.git
+cd delta-service-frontend-case
+pnpm install
+pnpm dev
+```
+
+---
+
+## 🧩 Özellikler
+
+### ✅ Kullanıcı Listeleme
+- İlk açılışta API'den veri çekilir.
+- Çekilen veriler `localStorage`'a kaydedilir.
+- Listeleme işlemleri local veriler üzerinden yapılır.
+- Sayfalama desteklenir.
+
+### 🔍 Arama & Filtreleme
+- Ad, soyad, e-posta veya telefon numarasına göre arama yapılabilir.
+
+### ➕ Kullanıcı Ekleme
+- Yeni kullanıcı formdan eklenir, `localStorage`'a kaydedilir ve listeye yansıtılır.
+
+### 📝 Kullanıcı Güncelleme
+- Kullanıcılar düzenlenebilir.
+- Güncelleme işlemi `localStorage`'taki ID'ye göre yapılır.
+
+### ❌ Kullanıcı Silme
+- Silinen kullanıcılar anında localStorage ve arayüzden kaldırılır.
+
+### 🔄 Yenileme
+- `Refresh` butonu, `localStorage`'daki veriyi yeniden okur ve listeyi tazeler.
+
+---
+
+## 🛠 Kullanılan Teknolojiler
+
+- [Vite](https://vitejs.dev/) (React için hızlı geliştirme ortamı)
+- React
+- Reactstrap (Bootstrap 5 bileşenleri)
+- DummyJSON API (https://dummyjson.com/users)
+- localStorage (veri saklama)
+
+---
+
+## 📂 Proje Yapısı
+
+```
+/src
+  /components
+    UserList.jsx
+    UserModal.jsx
+    FilterComponent.jsx
+    Pagination.jsx
+  /services
+    api.js
+    localStorage.js
+  App.jsx
+  main.jsx
+```
+
+---
