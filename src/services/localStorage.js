@@ -11,7 +11,7 @@ const localStorageService = {
     }
   },
 
-  addUser: (user) => {
+   addUser: (user) => {
     try {
       const users = localStorageService.getUsers();
 
@@ -26,6 +26,54 @@ const localStorageService = {
       throw error;
     }
   },
+
+  updateUser: (user) => {
+    try {
+      console.log('Updating user in localStorage:', user);
+      const users = localStorageService.getUsers();
+      const index = users.findIndex(u => u.id === user.id);
+      
+      console.log('Found user at index:', index, 'with ID:', user.id);
+      
+      if (index !== -1) {
+        users[index] = {
+          ...users[index],
+          ...user,
+          id: user.id
+        };
+        
+        console.log('Updated user object:', users[index]);
+        
+        localStorage.setItem(localStorageService.USERS_KEY, JSON.stringify(users));
+        return users[index];
+      } else {
+        console.warn('User with ID', user.id, 'not found in localStorage');
+      }
+      return null;
+    } catch (error) {
+      console.error('Error updating user in localStorage:', error);
+      throw error;
+    }
+  },
+
+  deleteUser: (userId) => {
+    try {
+      console.log('Deleting user from localStorage with ID:', userId);
+      const users = localStorageService.getUsers();
+      const filteredUsers = users.filter(user => user.id !== userId);
+      
+      if (users.length !== filteredUsers.length) {
+        localStorage.setItem(localStorageService.USERS_KEY, JSON.stringify(filteredUsers));
+        return true;
+      } else {
+        console.warn('User with ID', userId, 'not found in localStorage for deletion');
+        return false;
+      }
+    } catch (error) {
+      console.error('Error deleting user from localStorage:', error);
+      throw error;
+    }
+  }
 };
 
 export default localStorageService;

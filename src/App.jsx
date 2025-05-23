@@ -21,6 +21,8 @@ function App() {
   const [users, setUsers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [usersPerPage] = useState(10);
+  const [selectedUser, setSelectedUser] = useState(null);
+
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
@@ -55,6 +57,32 @@ function App() {
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
   const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
   const totalPages = Math.ceil(users.length / usersPerPage);
+
+const handleAddUser = (user) => {
+  const newUser = localStorageService.addUser(user);
+  setUsers(prev => [...prev, newUser]);
+};
+
+const handleUpdateUser = (user) => {
+  const updated = localStorageService.updateUser(user);
+  if (updated) {
+    setUsers(prev =>
+      prev.map(u => u.id === updated.id ? updated : u)
+    );
+  }
+};
+
+const handleEditUser = (user) => {
+  setSelectedUser(user);
+  setIsModalOpen(true);
+};
+
+const handleDeleteUser = (userId) => {
+  const success = localStorageService.deleteUser(userId);
+  if (success) {
+    setUsers(prev => prev.filter(u => u.id !== userId));
+  }
+};
 
   if (users.length === 0) {
     return (
@@ -102,8 +130,10 @@ function App() {
             </CardHeader>
             <CardBody>
               <UserList 
-                users={currentUsers} 
-              />
+  users={currentUsers} 
+  onEditUser={handleEditUser}
+  onDeleteUser={handleDeleteUser}
+/>
               <PaginationComponent 
                 currentPage={currentPage} 
                 totalPages={totalPages} 
@@ -114,11 +144,13 @@ function App() {
         </Col>
       </Row>
 
-      <UserModal 
-        isOpen={isModalOpen} 
-        toggle={toggleModal} 
-    
-      />
+<UserModal 
+  isOpen={isModalOpen} 
+  toggle={toggleModal} 
+  onAddUser={handleAddUser}
+  onUpdateUser={handleUpdateUser}
+  selectedUser={selectedUser}
+/>
     </Container>
   );
 }

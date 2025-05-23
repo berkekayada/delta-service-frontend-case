@@ -1,7 +1,7 @@
-import { Table, Button, ButtonGroup, Alert } from 'reactstrap';
+import { Table, Button } from 'reactstrap';
 import './index.css';
 
-const UserList = ({users}) => {
+const UserList = ({ users, onEditUser, onDeleteUser }) => {
 
 
   return (
@@ -26,10 +26,14 @@ const UserList = ({users}) => {
             <td>{user.phone}</td>
             <td>
             <div className="custom-button-group">
-  <Button className="custom-edit-button" color="primary" size="sm">
+  <Button  onClick={() => onEditUser(user)}  className="custom-edit-button" color="primary" size="sm">
     <i className="bi bi-pen"></i>
   </Button>
-  <Button className="custom-delete-button" color="danger" size="sm">
+  <Button onClick={() => {
+                    if (window.confirm(`Are you sure you want to delete ${user.firstName} ${user.lastName}?`)) {
+                      onDeleteUser(user.id);
+                    }
+                  }} className="custom-delete-button" color="danger" size="sm">
     <i className="bi bi-trash"></i>
   </Button>
 </div>
