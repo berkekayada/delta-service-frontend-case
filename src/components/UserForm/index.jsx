@@ -199,12 +199,10 @@ const UserForm = ({ user, onSubmit, resetForm }) => {
       return;
     }
     
-    console.log('Form submit with user ID:', user?.id);
     const submitData = {
       ...formData,
       id: user?.id
     };
-    console.log('Submitting data:', submitData);
     onSubmit(submitData);
   };
 

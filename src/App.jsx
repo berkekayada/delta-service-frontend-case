@@ -4,7 +4,6 @@ import {
   Row, 
   Col, 
   Button, 
-  ButtonGroup,
   Card, 
   CardHeader, 
   CardBody,
@@ -69,7 +68,6 @@ function App() {
           lastRequestRef.current.query === currentRequest.query && 
           lastRequestRef.current.metadata === currentRequest.metadata &&
           users.length > 0) {
-        console.log('Skipping duplicate request with same parameters');
         return;
       }
       
@@ -100,14 +98,6 @@ function App() {
             
             
             const matches = normalizedUserPhone.includes(normalizedPhoneQuery);
-            console.log('Phone search:', {
-              original: user.phone,
-              normalized: normalizedUserPhone,
-              query: phoneQuery,
-              normalizedQuery: normalizedPhoneQuery,
-              matches: matches
-            });
-            
             return matches;
           }
           
@@ -141,11 +131,9 @@ function App() {
             
             return matches;
           }
-          
-          
+    
           const searchTermLower = searchQuery.toLowerCase();
-          
-          
+    
           const phoneMatch = user.phone && (
             user.phone.toLowerCase().includes(searchTermLower) || 
             user.phone.replace(/[\s\-+]/g, '').includes(searchTermLower.replace(/[\s\-+]/g, ''))
@@ -211,19 +199,15 @@ function App() {
     try {
       
       await apiService.addUser(userData);
-      
-      
+ 
       const newUser = localStorageService.addUser(userData);
-      
-      
+
       setLocalUsers(prev => [...prev, newUser]);
-      
-      
+
       if (currentPage === totalPages) {
         setUsers(prev => [...prev, newUser]);
       }
-      
-      
+ 
       setIsModalOpen(false);
       showToast('User added successfully!', 'success');
     } catch (error) {
@@ -233,9 +217,7 @@ function App() {
 
   const handleUpdateUser = async (userData) => {
     try {
-      console.log('Handling update for user:', userData);
-      
-      
+
       const isLocalUser = userData.id > 1000;
       
       if (isLocalUser) {
@@ -243,26 +225,20 @@ function App() {
         const updatedUser = localStorageService.updateUser(userData);
         
         if (updatedUser) {
-          console.log('Updated local user:', updatedUser);
-          
+
           setLocalUsers(prev => 
             prev.map(user => user.id === updatedUser.id ? updatedUser : user)
           );
-          
-          
+
           setUsers(prev => 
             prev.map(user => user.id === updatedUser.id ? updatedUser : user)
           );
         }
       } else {
-        
-        
+
         try {
           
           await apiService.updateUser(userData.id, userData);
-          console.log('API user update simulation completed for ID:', userData.id);
-          
-          
           setUsers(prev => 
             prev.map(user => user.id === userData.id ? userData : user)
           );
@@ -391,7 +367,6 @@ function App() {
                     isPhoneSearch: metadata.isPhoneSearch || false
                   });
                   setCurrentPage(1);
-                  console.log('Search metadata:', metadata);
                 } else {
                   console.log('Ignoring duplicate filter apply with same parameters');
                 }

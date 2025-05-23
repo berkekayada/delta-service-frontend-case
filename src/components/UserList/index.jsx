@@ -25,7 +25,6 @@ const UserList = ({ users, onEditUser, onDeleteUser }) => {
     }
   };
 
-  console.log('userss',users)
   return (
     <>
       <Table striped responsive>

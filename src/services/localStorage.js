@@ -29,11 +29,9 @@ const localStorageService = {
 
   updateUser: (user) => {
     try {
-      console.log('Updating user in localStorage:', user);
       const users = localStorageService.getUsers();
       const index = users.findIndex(u => u.id === user.id);
       
-      console.log('Found user at index:', index, 'with ID:', user.id);
       
       if (index !== -1) {
         users[index] = {
@@ -42,7 +40,6 @@ const localStorageService = {
           id: user.id
         };
         
-        console.log('Updated user object:', users[index]);
         
         localStorage.setItem(localStorageService.USERS_KEY, JSON.stringify(users));
         return users[index];
@@ -58,7 +55,6 @@ const localStorageService = {
 
   deleteUser: (userId) => {
     try {
-      console.log('Deleting user from localStorage with ID:', userId);
       const users = localStorageService.getUsers();
       const filteredUsers = users.filter(user => user.id !== userId);
       

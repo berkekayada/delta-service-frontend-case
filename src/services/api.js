@@ -57,7 +57,6 @@ const apiService = {
   
   updateUser: async (userId, userData) => {
     try {
-      console.log(`Simulating update for user ID: ${userId}`);
       const response = await axios.put(`${BASE_URL}/${userId}`, userData);
       return response.data;
     } catch (error) {
@@ -68,7 +67,6 @@ const apiService = {
   
   deleteUser: async (userId) => {
     try {
-      console.log(`Simulating deletion for user ID: ${userId}`);
       const response = await axios.delete(`${BASE_URL}/${userId}`);
       return response.data;
     } catch (error) {

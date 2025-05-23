@@ -74,10 +74,8 @@ const UserModal = ({
 
   const handleSubmit = (formData) => {
     if (selectedUser) {
-      console.log('Updating user with ID:', selectedUser.id, formData);
       onUpdateUser({ ...formData, id: selectedUser.id });
     } else {
-      console.log('Adding new user:', formData);
       onAddUser(formData);
     }
     toggle();
