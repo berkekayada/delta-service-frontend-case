@@ -1,0 +1,26 @@
+.custom-button-group {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+}
+.custom-edit-button{
+    background-color: #FF9B45;
+    border-color: #FF9B45;
+}
+.custom-edit-button:hover{
+    background-color: #FE5D26;
+    border-color: #FE5D26;
+}
+.custom-edit-button,
+.custom-delete-button {
+  border-radius: 10px;
+  font-size: 1rem;
+  color: white;
+}
+
+.custom-edit-button i,
+.custom-delete-button i {
+  font-size: 1rem;
+  color: white;
+}
