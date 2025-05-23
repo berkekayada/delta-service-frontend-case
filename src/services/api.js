@@ -3,14 +3,40 @@ import axios from 'axios';
 const BASE_URL = 'https://dummyjson.com/users';
 
 const apiService = {
-  getUsers: async (limit = 10, skip = 0, searchQuery = '') => {
+  getUsers: async (limit = 10, skip = 0, searchQuery = '', metadata) => {
     try {
       let url = `${BASE_URL}?limit=${limit}&skip=${skip}`;
-
       if (searchQuery) {
-        url = `${BASE_URL}/search?q=${encodeURIComponent(searchQuery)}&limit=${limit}&skip=${skip}`;
+        const isPhoneSearch = metadata?.isPhoneSearch || /^[0-9\s\-+]+$/.test(searchQuery);
+        if (isPhoneSearch) {
+          const allUsers = await axios.get(`${BASE_URL}?limit=100`);
+          
+          let numericQuery = searchQuery;
+          if (metadata?.phoneQuery) {
+            numericQuery = metadata.phoneQuery;
+          }
+          numericQuery = numericQuery.replace(/[\s\-+]/g, '');
+          const filteredUsers = allUsers.data.users.filter(user => {
+            if (!user.phone) return false;
+            const normalizedPhone = user.phone.replace(/[\s\-+]/g, '');
+            const matches = normalizedPhone.includes(numericQuery);
+            
+            
+            return matches;
+          });          
+          const paginatedUsers = filteredUsers.slice(skip, skip + limit);
+          
+          return {
+            users: paginatedUsers,
+            total: filteredUsers.length,
+            skip,
+            limit
+          };
+        } else {
+          url = `${BASE_URL}/search?q=${encodeURIComponent(searchQuery)}&limit=${limit}&skip=${skip}`;
+        }
       }
-
+      
       const response = await axios.get(url);
       return response.data;
     } catch (error) {
@@ -18,6 +44,7 @@ const apiService = {
       throw error;
     }
   },
+
   addUser: async (userData) => {
     try {
       const response = await axios.post(`${BASE_URL}/add`, userData);
