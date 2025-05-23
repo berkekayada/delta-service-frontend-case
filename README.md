@@ -1,6 +1,7 @@
 # 🧾 User Management Uygulaması
 
-🎬 [Uygulama Tanıtım Videosu](./showcase.mp4)
+🎬 [Uygulama Tanıtım Videosu]
+https://github.com/user-attachments/assets/a41f3dd3-3d4e-4ad8-be9d-169bf48cc97e
 
 
 Vite + React + Reactstrap tabanlı bir kullanıcı yönetim uygulamasıdır. Uygulama, sahte bir API'den (DummyJSON) kullanıcı verilerini alır, `localStorage`'a kaydeder ve sonraki işlemleri tamamen local veriler üzerinden yürütür.
