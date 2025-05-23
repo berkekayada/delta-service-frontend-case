@@ -1,81 +1,61 @@
-import {
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Button,
-  ListGroup,
-  ListGroupItem,
-  Input,
-} from "reactstrap";
-import UserForm from "../UserForm";
+import { Table, Button, ButtonGroup, Alert } from 'reactstrap';
 
-const UserModal = ({ isOpen, toggle }) => {
+const UserList = ({ users }) => {
+  if (!users || users.length === 0) {
+    return (
+      <Alert color="info">
+        No users found. Try adjusting your search filter or add a new user.
+      </Alert>
+    );
+  }
+  
   return (
-    <Modal isOpen={isOpen} toggle={toggle} size="lg">
-      <ModalHeader toggle={toggle}>
-        Add / Edit User
-        <small className="ms-2 text-muted">(0 users)</small>
-      </ModalHeader>
-      <ModalBody>
-        <div className="d-flex">
-          <div
-            className="user-list-container"
-            style={{
-              width: "40%",
-              borderRight: "1px solid #dee2e6",
-              paddingRight: "15px",
-            }}
-          >
-            <h5>Select User to Edit</h5>
-            <Input
-              type="text"
-              placeholder="Search users..."
-              className="mb-3"
-              value={""}
-            />
-            <div
-              id="scrollableDiv"
-              style={{ height: "400px", overflow: "auto" }}
-            >
-              <ListGroup>
-                <ListGroupItem
-                  action
-                  active={false}
-                  className="d-flex justify-content-between align-items-center"
+    <Table striped responsive>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Email</th>
+          <th>Phone</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {users.map((user) => (
+          <tr key={user.id}>
+            <td>{user.id}</td>
+            <td>{user.firstName}</td>
+            <td>{user.lastName}</td>
+            <td>{user.email}</td>
+            <td>{user.phone}</td>
+            <td>
+              <ButtonGroup>
+                <Button 
+                  color="primary" 
+                  size="sm" 
+                  onClick={() => onEditUser(user)}
                 >
-                  <div>
-                    John Doe
-                    <div>
-                      <small>john.doe@example.com</small>
-                    </div>
-                  </div>
-                </ListGroupItem>
-              </ListGroup>
-            </div>
-            <Button
-              color="secondary"
-              className="mt-3 w-100"
-            >
-              Clear Selection
-            </Button>
-          </div>
-
-          <div
-            className="form-container"
-            style={{ width: "60%", paddingLeft: "15px" }}
-          >
-            <UserForm />
-          </div>
-        </div>
-      </ModalBody>
-      <ModalFooter>
-        <Button color="secondary" onClick={toggle}>
-          Cancel
-        </Button>
-      </ModalFooter>
-    </Modal>
+                    <i className="bi bi-pen" style={{ fontSize: '1rem', color: 'cornflowerblue' }}></i>
+                </Button>
+                <Button 
+                  color="danger" 
+                  size="sm" 
+                  onClick={() => {
+                    if (window.confirm(`Are you sure you want to delete ${user.firstName} ${user.lastName}?`)) {
+                      onDeleteUser(user.id);
+                    }
+                  }}
+                >
+                  <i class="bi bi-trash"></i>
+                </Button>
+              </ButtonGroup>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </Table>
   );
 };
 
-export default UserModal;
+export default UserList;

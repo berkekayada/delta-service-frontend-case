@@ -1,4 +1,4 @@
-import { 
+import {
   Container, 
   Row, 
   Col, 
@@ -6,28 +6,55 @@ import {
   Card, 
   CardHeader,
   CardBody, 
+  Alert
 } from 'reactstrap';
 import './App.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import UserList from './components/UserList';
 import UserModal from './components/UserModal';
+import apiService from './services/api';
+import localStorageService from './services/localStorage';
+import PaginationComponent from './components/Pagination';
 
 function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [users, setUsers] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [usersPerPage] = useState(10);
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
   };
 
-  const users = [
-    {
-      id: 1,
-      firstName: 'John',
-      lastName: 'Doe',
-      email: 'john.doe@example.com',
-      phone: '+1234567890',
-    },
-  ];
+ useEffect(() => {
+  const fetchInitialUsers = async () => {
+    try {
+      const data = await apiService.getUsers();
+      const existingUsers = localStorageService.getUsers();
+
+      const existingIds = new Set(existingUsers.map(user => user.id));
+
+      const newUsers = data.users.filter(user => !existingIds.has(user.id));
+
+      newUsers.forEach(user => localStorageService.addUser(user));
+
+      setUsers(localStorageService.getUsers());
+    } catch (error) {
+      console.error('Error fetching initial users:', error);
+    }
+  };
+
+  fetchInitialUsers();
+}, []);
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const indexOfLastUser = currentPage * usersPerPage;
+  const indexOfFirstUser = indexOfLastUser - usersPerPage;
+  const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
+  const totalPages = Math.ceil(users.length / usersPerPage);
 
   if (users.length === 0) {
     return (
@@ -42,10 +69,6 @@ function App() {
       <Row className="mb-4">
         <Col>
           <h1 className="mb-3">User Management Application</h1>
-          <p className="text-muted">
-            This application demonstrates user management features using React, 
-            including pagination, adding new users, editing existing users, and deleting users.
-          </p>
         </Col>
       </Row>
 
@@ -57,7 +80,7 @@ function App() {
                 <h4 className="mb-0">User List</h4>
                 <div>
                   <small className="text-muted me-2">
-                    Showing page 1 of 1 (0 total users)
+                    Showing {users.length} total users
                   </small>
                 </div>
               </div>
@@ -70,7 +93,8 @@ function App() {
                 </Button>
                 <Button 
                   color="success" 
-                  size="sm" 
+                  size="sm"
+                  onClick={() => setUsers(localStorageService.getUsers())}
                 >
                   Refresh
                 </Button>
@@ -78,7 +102,12 @@ function App() {
             </CardHeader>
             <CardBody>
               <UserList 
-                users={users} 
+                users={currentUsers} 
+              />
+              <PaginationComponent 
+                currentPage={currentPage} 
+                totalPages={totalPages} 
+                onPageChange={handlePageChange} 
               />
             </CardBody>
           </Card>
@@ -88,6 +117,7 @@ function App() {
       <UserModal 
         isOpen={isModalOpen} 
         toggle={toggleModal} 
+    
       />
     </Container>
   );
